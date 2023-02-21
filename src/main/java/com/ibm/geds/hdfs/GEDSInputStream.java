@@ -29,6 +29,14 @@ public class GEDSInputStream extends FSInputStream {
         this.tmpbuffer = ByteBuffer.allocate(8);
     }
 
+    public String metadata() throws IOException {
+        return file.metadata();
+    }
+
+    public byte[] metadataAsByteArray() throws IOException {
+        return file.metadataAsByteArray();
+    }
+
     private long position = 0;
     private ByteBuffer tmpbuffer;
 
