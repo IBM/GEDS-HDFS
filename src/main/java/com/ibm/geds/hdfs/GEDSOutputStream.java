@@ -20,6 +20,38 @@ public class GEDSOutputStream extends OutputStream implements Seekable {
         this.file = file;
     }
 
+    public String metadata() throws IOException {
+        return file.metadata();
+    }
+
+    public byte[] metadataAsByteArray() throws IOException {
+        return file.metadataAsByteArray();
+    }
+
+    public void setMetadata(String metadata) throws IOException {
+        setMetadata(metadata, true);
+    }
+
+    public void setMetadata(String metadata, boolean seal) throws IOException {
+        file.setMetadata(metadata, seal);
+    }
+
+    public void setMetadata(ByteBuffer buffer) throws IOException {
+        setMetadata(buffer, true);
+    }
+
+    public void setMetadata(ByteBuffer buffer, boolean seal) throws IOException {
+        file.setMetadata(buffer, seal);
+    }
+
+    public void setMetadata(byte[] buffer, int offset, int length) throws IOException {
+        setMetadata(buffer, offset, length, true);
+    }
+
+    public void setMetadata(byte[] buffer, int offset, int length, boolean seal) throws IOException {
+        file.setMetadata(buffer, offset, length, seal);
+    }
+
     private void checkOpen() throws IOException {
         if (file.isClosed()) {
             throw new EOFException("The file is already closed!");
@@ -33,7 +65,7 @@ public class GEDSOutputStream extends OutputStream implements Seekable {
     public void write(int b) throws IOException {
         synchronized (this) {
             checkOpen();
-            singleByteBuffer[0] =(byte) b;
+            singleByteBuffer[0] = (byte) b;
             file.write(position, singleByteBuffer, 0, 1);
             position += 1;
         }
