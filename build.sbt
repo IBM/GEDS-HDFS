@@ -9,7 +9,8 @@ name := "geds-hdfs"
 version := "SNAPSHOT"
 
 val gedsVersion = sys.env.getOrElse("GEDS_VERSION", "1.0")
-val gedsInstallPath = sys.env.getOrElse("GEDS_INSTALL", "/home/psp/geds-install")
+val userHome = sys.env.getOrElse("HOME", "/home/psp")
+val gedsInstallPath = sys.env.getOrElse("GEDS_INSTALL", userHome+"/geds-install")
 val hadoopVersion = sys.env.getOrElse("HADOOP_VERSION", "3.3.4")
 
 libraryDependencies ++= Seq(
