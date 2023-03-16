@@ -8,14 +8,13 @@ organization := "com.ibm"
 name := "geds-hdfs"
 version := "SNAPSHOT"
 
-val gedsVersion = sys.env.getOrElse("GEDS_VERSION", "1.0")
+val gedsApiVersion = "1.0"
 val gedsInstallPath = sys.env.getOrElse("GEDS_INSTALL", "/home/psp/geds-install")
 val hadoopVersion = sys.env.getOrElse("HADOOP_VERSION", "3.3.4")
 
 libraryDependencies ++= Seq(
   "org.apache.hadoop" % "hadoop-common" % hadoopVersion % "provided",
-  "com.ibm.geds" % "geds" % gedsVersion from "file://"+gedsInstallPath+"/java/geds-"+gedsVersion+".jar",
-
+  "com.ibm.geds" % "geds" % gedsApiVersion from "file://"+gedsInstallPath+"/java/geds-"+gedsApiVersion+".jar",
   "junit" % "junit" % "4.13.2" % Test, // TRAVIS_SCALA_WORKAROUND_REMOVE_LINE
 )
 
