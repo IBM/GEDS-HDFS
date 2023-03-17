@@ -5,7 +5,7 @@
 #
 
 # Spark installation
-export SPARK_HOME="/home/${USER}/software/spark-3.3.1-bin-hadoop3"
+export SPARK_HOME="/home/${USER}/software/spark-3.3.2-bin-hadoop3"
 
 # Kubernetes Server
 export KUBERNETES_SERVER="https://9.4.244.122:6443"
