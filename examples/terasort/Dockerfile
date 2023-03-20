@@ -18,9 +18,9 @@ RUN apt-get clean && apt-get update \
 # terasort
 FROM java-prerequisites as terasort-builder
 
-RUN git clone https://github.com/ehiggs/spark-terasort \
+RUN git clone https://github.com/pspoerri/spark-terasort \
     && cd spark-terasort \
-    && git checkout 8fe52da \
+    && git checkout add_timings \
     && sed -i 's/3\.0\.1/3\.3\.1/g' pom.xml \
     && sed -i 's/2\.12\.10/2\.12\.15/g' pom.xml \
     && mvn package
