@@ -173,5 +173,5 @@ ${SPARK_HOME}/bin/spark-submit \
     local:///opt/spark/jars/spark-terasort-1.2-SNAPSHOT.jar \
        "s3a://${S3A_OUTPUT_BUCKET}/output/terasort/${SIZE}-${PROCESS_TAG}" "s3a://${S3A_OUTPUT_BUCKET}/output/terasort-validated/${SIZE}-${PROCESS_TAG}"
 
-mc -r -force ${S3A_REGION}/${S3A_OUTPUT_BUCKET}/output/terasort/${SIZE}-${PROCESS_TAG} || true
-mc -r -force ${S3A_REGION}/${SHUFFLE_DATA_LOCATION} || true
+s3cmd rm -r s3://${S3A_OUTPUT_BUCKET}/output/terasort/${SIZE}-${PROCESS_TAG} || true
+s3cmd rm -r s3://${SHUFFLE_DATA_LOCATION} || true
