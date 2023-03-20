@@ -27,4 +27,15 @@ export KUBERNETES_SERVICE_ACCOUNT="${KUBERNETES_NAMESPACE}-manager"
 
 # Datasets
 ## Terasort
+# Contains the following datasets:
+# - 1g
+# - 10g
+# - 100g
 export TERASORT_BUCKET=zrlio-terasort
+
+## TPCDS
+# Contains the following datasets:
+# - sf1000_parquet
+# - sf100_parquet
+# - sf10_parquet
+export TPCDS_BUCKET=zrlio-tpcds
