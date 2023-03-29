@@ -13,7 +13,6 @@ Apache Spark and Hadoop interact with GEDS in the following way:
 Make sure SBT is installed on the system. Install GEDS and then run the package script:
 ```bash
 export GEDS_INSTALL=$HOME/geds-install # GEDS install path
-export GEDS_VERSION=1.0 # GEDS version
 sbt package
 ```
 The library will be located in `target/scala-2.12/`.
