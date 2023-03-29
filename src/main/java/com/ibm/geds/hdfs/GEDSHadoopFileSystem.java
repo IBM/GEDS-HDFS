@@ -6,6 +6,7 @@
 package com.ibm.geds.hdfs;
 
 import com.ibm.geds.GEDS;
+import com.ibm.geds.GEDSConfig;
 import com.ibm.geds.GEDSFile;
 import com.ibm.geds.GEDSFileStatus;
 import org.apache.hadoop.conf.Configuration;
@@ -21,6 +22,7 @@ import java.net.URI;
 public class GEDSHadoopFileSystem extends FileSystem {
 
     private GEDS geds = null;
+    private GEDSConfig gedsConfig = null;
     private URI uri;
     private String bucket;
     private Path workingDirectory;
@@ -37,8 +39,10 @@ public class GEDSHadoopFileSystem extends FileSystem {
         }
         uri = name;
         bucket = name.getHost();
+        gedsConfig = GEDSInstance.getConfig(conf);
         geds = GEDSInstance.initialize(bucket, conf);
-        blockSize = conf.getLong(Constants.BLOCKSIZE, Constants.DEFAULT_BLOCKSIZE);
+
+        blockSize = gedsConfig.getLong(Constants.CACHE_BLOCK_SIZE);
         workingDirectory = new Path("/");
     }
 
