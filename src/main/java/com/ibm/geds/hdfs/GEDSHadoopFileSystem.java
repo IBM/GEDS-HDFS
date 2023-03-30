@@ -52,6 +52,7 @@ public class GEDSHadoopFileSystem extends FileSystem {
         // super.close();
         // geds.stopGEDS();
         // geds = null;
+        geds.relocate();
         geds.printStatistics();
     }
 
