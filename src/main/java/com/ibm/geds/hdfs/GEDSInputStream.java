@@ -224,4 +224,12 @@ public class GEDSInputStream extends FSInputStream {
             throw new EOFException("Unable to read length " + buffer.length + " at position " + position + ".");
         }
     }
+
+    public void readFully(long position, ByteBuffer buffer) throws IOException {
+        int expected = buffer.remaining();
+        int len = file.read(position, buffer);
+        if (len != expected) {
+            throw new EOFException("Unable to read length " + buffer.length + " at position " + position + ".");
+        }
+    }
 }
