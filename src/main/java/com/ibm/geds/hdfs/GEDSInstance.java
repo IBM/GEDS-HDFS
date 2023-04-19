@@ -46,6 +46,18 @@ public class GEDSInstance {
             if (http_server_port != 0) {
                 instanceConfig.set(Constants.HTTP_SERVER_PORT, http_server_port);
             }
+            long available_local_memory = conf.getLong(Constants.GEDS_PREFIX + Constants.AVAILABLE_LOCAL_MEMORY, 0);
+            if (available_local_memory != 0) {
+                instanceConfig.set(Constants.AVAILABLE_LOCAL_MEMORY, available_local_memory);
+            }
+            long available_local_storage = conf.getLong(Constants.GEDS_PREFIX + Constants.AVAILABLE_LOCAL_STORAGE, 0);
+            if (available_local_storage != 0) {
+                instanceConfig.set(Constants.AVAILABLE_LOCAL_STORAGE, available_local_storage);
+            }
+            long io_thread_pool_size = conf.getLong(Constants.GEDS_PREFIX + Constants.IO_THREAD_POOL_SIZE, 0);
+            if (io_thread_pool_size != 0) {
+                instanceConfig.set(Constants.IO_THREAD_POOL_SIZE, io_thread_pool_size);
+            }
         }
         return instanceConfig;
     }
