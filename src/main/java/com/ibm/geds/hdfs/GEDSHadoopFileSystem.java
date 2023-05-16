@@ -73,12 +73,15 @@ public class GEDSHadoopFileSystem extends FileSystem {
     }
 
     private String computeGEDSPath(Path f) {
-        String s = Path.getPathWithoutSchemeAndAuthority(f).toString();
-        // Strip leading / from string.
-        if (s.startsWith("/")) {
-            s = s.substring(1);
+        try {
+            String s = Path.getPathWithoutSchemeAndAuthority(f).toString();
+            if (s.startsWith("/")) {
+                s = s.substring(1);
+            }
+            return s;
+        } catch(Exception e) {
+            return "";
         }
-        return s;
     }
 
     @Override
