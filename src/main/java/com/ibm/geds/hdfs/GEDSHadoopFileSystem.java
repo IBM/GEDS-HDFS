@@ -31,12 +31,6 @@ public class GEDSHadoopFileSystem extends FileSystem {
     @Override
     public void initialize(URI name, Configuration conf) throws IOException {
         super.initialize(name, conf);
-        if (geds != null) {
-            throw new RuntimeException("Cannot re-initialize GEDSHadoopFileSystem! Got" + name);
-        }
-        if (name.getPort() != -1) {
-            throw new RuntimeException("Port configuration in URI not allowed: Got " + name);
-        }
         uri = name;
         bucket = name.getHost();
         gedsConfig = GEDSInstance.getConfig(conf);
