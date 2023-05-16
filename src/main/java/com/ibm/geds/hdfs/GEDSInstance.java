@@ -65,6 +65,11 @@ public class GEDSInstance {
     public synchronized static GEDS initialize(String bucket, Configuration conf) {
         GEDS geds = initialize(conf);
 
+        try {
+            geds.createBucket(bucket);
+        } catch(Exception e) {
+            // Always initialize bucket.
+        }
         String bucketAccessKey = conf.get(Constants.GEDS_PREFIX + bucket + ".accessKey");
         String bucketSecretKey = conf.get(Constants.GEDS_PREFIX + bucket + ".secretKey");
         String bucketEndpoint = conf.get(Constants.GEDS_PREFIX + bucket + ".endpoint");
