@@ -24,14 +24,14 @@ javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSC
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
-  artifact.name + "_" +"hadoop" + hadoopVersion + "-geds" + gedsApiVersion + "_" + module.revision + "." + artifact.extension
+  artifact.name + "_" + sv.binary +  "-geds" + gedsApiVersion + "-hadoop" + hadoopVersion + "_" + module.revision + "." + artifact.extension
 }
 
 assemblyMergeStrategy := {
   case PathList("META-INF", xs@_*) => MergeStrategy.discard
   case x => MergeStrategy.first
 }
-assembly / assemblyJarName := s"${name.value}_geds${gedsApiVersion}_${version.value}-with-dependencies.jar"
+assembly / assemblyJarName := s"${name.value}_${scalaBinaryVersion.value}-geds${gedsApiVersion}-hadoop${hadoopVersion}_${version.value}-with-dependencies.jar"
 assembly / assemblyOption ~= {
   _.withIncludeScala(false)
 }
