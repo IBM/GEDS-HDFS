@@ -30,6 +30,6 @@ if [[ "${SCALA_VERSION:0:4}" == "2.13" ]]; then
 fi
 
 
-GEDS_VERSION=${GEDS_VERSION:-"0.8.4"}
+GEDS_VERSION=${GEDS_VERSION:-"1.0"}
 wget -nv "https://github.com/IBM/GEDS/releases/download/v${GEDS_VERSION}/geds-x86_64-debian11.5-${GEDS_VERSION}-Release.tar.gz"
 tar xf "geds-x86_64-debian11.5-${GEDS_VERSION}-Release.tar.gz"
