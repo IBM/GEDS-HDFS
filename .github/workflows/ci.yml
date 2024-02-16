@@ -41,7 +41,7 @@ jobs:
     env:
       HADOOP_VERSION: ${{ matrix.hadoop }}
       SCALA_VERSION: ${{ matrix.scala }}
-      GEDS_VERSION: "0.8.4"
+      GEDS_VERSION: "1.0"
       GEDS_INSTALL: ${{ github.workspace }}/geds
     steps:
     - name: Checkout
