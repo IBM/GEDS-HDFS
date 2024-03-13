@@ -141,7 +141,11 @@ public class GEDSHadoopFileSystem extends FileSystem {
     @Override
     public FileStatus getFileStatus(Path f) throws IOException {
         GEDSFileStatus st = geds.status(bucket, computeGEDSPath(f));
-        return new FileStatus(st.size, st.isDirectory, 1, blockSize, 0,
-                new Path(st.key).makeQualified(getUri(), workingDirectory));
+        System.out.println("getFileStatus: "+f.toString() + " gedsPath: "+st.key);
+        String wrappedKey = st.key;
+        if (wrappedKey.equals("")) {
+            wrappedKey = "/";
+        }
+        return new FileStatus(st.size, st.isDirectory, 1, blockSize, 0, f);
     }
 }
