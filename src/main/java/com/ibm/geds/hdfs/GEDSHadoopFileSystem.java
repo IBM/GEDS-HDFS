@@ -67,9 +67,16 @@ public class GEDSHadoopFileSystem extends FileSystem {
     }
 
     private String computeGEDSPath(Path f) {
+        Boolean startsWithSlash;
+        return computeGEDSPath(f);
+    }
+
+    private String computeGEDSPath(Path f, Boolean startsWithSlash) {
+        startsWithSlash = false;
         try {
             String s = Path.getPathWithoutSchemeAndAuthority(f).toString();
             if (s.startsWith("/")) {
+                startsWithSlash = true;
                 s = s.substring(1);
             }
             return s;
@@ -109,16 +116,21 @@ public class GEDSHadoopFileSystem extends FileSystem {
 
     @Override
     public FileStatus[] listStatus(Path f) throws FileNotFoundException, IOException {
-        String path = computeGEDSPath(f);
+        // ToDo: Fix WorkingDirectory.
+        // Strip `/` in case we observe it.
+        Boolean startsWithSlash = false;
+        String path = computeGEDSPath(f, startsWithSlash);
         if (!path.endsWith("/")) {
             path = path + "/";
         }
         GEDSFileStatus[] st = geds.listAsFolder(bucket, path);
         FileStatus[] response = new FileStatus[st.length];
         for (int i = 0; i < st.length; i++) {
+            // Readd `/`.
+            String prefix = startsWithSlash ? "/": "";
             GEDSFileStatus s = st[i];
             response[i] = new FileStatus(s.size, s.isDirectory, 1, blockSize, 0,
-                    new Path(s.key).makeQualified(getUri(), workingDirectory));
+                    new Path(prefix+s.key).makeQualified(getUri(), workingDirectory));
         }
         return response;
     }
