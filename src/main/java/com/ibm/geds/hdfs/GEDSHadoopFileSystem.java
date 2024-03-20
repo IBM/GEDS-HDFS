@@ -88,9 +88,10 @@ public class GEDSHadoopFileSystem extends FileSystem {
     @Override
     public FSDataOutputStream append(Path f, int bufferSize, Progressable progress) throws IOException {
         GEDSFile file = geds.open(bucket, computeGEDSPath(f));
+
         GEDSOutputStream stream = new GEDSOutputStream(file);
         stream.seekToEnd();
-        return new FSDataOutputStream(new BufferedOutputStream(stream), statistics);
+        return new FSDataOutputStream(new BufferedOutputStream(stream), statistics, stream.getPos());
     }
 
     @Override
