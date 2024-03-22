@@ -54,10 +54,19 @@ public class GEDSInstance {
             if (available_local_storage != 0) {
                 instanceConfig.set(Constants.AVAILABLE_LOCAL_STORAGE, available_local_storage);
             }
+            boolean cache_objects_from_s3 = conf.getBoolean(Constants.GEDS_PREFIX + Constants.CACHE_OBJECTS_FROM_S3,
+                    false);
+            instanceConfig.set(Constants.CACHE_OBJECTS_FROM_S3, cache_objects_from_s3 ? 1 : 0);
             long io_thread_pool_size = conf.getLong(Constants.GEDS_PREFIX + Constants.IO_THREAD_POOL_SIZE, 0);
             if (io_thread_pool_size != 0) {
                 instanceConfig.set(Constants.IO_THREAD_POOL_SIZE, io_thread_pool_size);
             }
+            boolean force_relocation_when_stopping = conf
+                    .getBoolean(Constants.GEDS_PREFIX + Constants.FORCE_RELOCATION_WHEN_STOPPING, false);
+            instanceConfig.set(Constants.FORCE_RELOCATION_WHEN_STOPPING, force_relocation_when_stopping ? 1 : 0);
+
+            // float storage_spilling_fraction = conf.getFloat(Constants.GEDS_PREFIX + Constants.STORAGE_SPILLING_FACTION, 0.7);
+            // instanceConfig.set(Constants.STORAGE_SPILLING_FACTION, storage_spilling_fraction)
         }
         return instanceConfig;
     }
@@ -67,7 +76,7 @@ public class GEDSInstance {
 
         try {
             geds.createBucket(bucket);
-        } catch(Exception e) {
+        } catch (Exception e) {
             // Always initialize bucket.
         }
         String bucketAccessKey = conf.get(Constants.GEDS_PREFIX + bucket + ".accessKey");

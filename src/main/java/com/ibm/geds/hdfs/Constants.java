@@ -16,5 +16,8 @@ public class Constants {
     public static final String HTTP_SERVER_PORT = "http_server_port";
     public static final String AVAILABLE_LOCAL_STORAGE = "available_local_storage";
     public static final String AVAILABLE_LOCAL_MEMORY = "available_local_memory";
+    public static final String CACHE_OBJECTS_FROM_S3 = "cache_objects_from_s3";
+    public static final String FORCE_RELOCATION_WHEN_STOPPING = "force_relocation_when_stopping";
     public static final String IO_THREAD_POOL_SIZE = "io_thread_pool_size";
+    public static final String STORAGE_SPILLING_FACTION = "storage_spilling_fraction";
 }
