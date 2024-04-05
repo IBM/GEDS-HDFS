@@ -15,9 +15,15 @@ val hadoopVersion = sys.env.getOrElse("HADOOP_VERSION", "3.3.4")
 
 libraryDependencies ++= Seq(
   "org.apache.hadoop" % "hadoop-common" % hadoopVersion % "provided",
-  "com.ibm.geds" % "geds" % gedsApiVersion from "file://"+gedsInstallPath+"/java/geds-"+gedsApiVersion+".jar",
-  "junit" % "junit" % "4.13.2" % Test, // TRAVIS_SCALA_WORKAROUND_REMOVE_LINE
+  "com.ibm.geds" % "geds" % gedsApiVersion from "file://"+gedsInstallPath+"/java/geds-"+gedsApiVersion+".jar"
 )
+
+libraryDependencies ++= (if (scalaBinaryVersion.value == "2.12") Seq(
+  "org.scalatest" %% "scalatest" % "3.2.2" % Test,
+  "org.junit.jupiter" % "junit-jupiter-engine" % "5.10.2" % Test,
+  "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % Test
+)
+else Seq())
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled")

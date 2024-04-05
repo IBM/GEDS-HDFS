@@ -66,16 +66,24 @@ public class GEDSHadoopFileSystem extends FileSystem {
         return new FSDataInputStream(new BufferedFSInputStream(new GEDSInputStream(file), bufferSize));
     }
 
-    private String computeGEDSPath(Path f) {
+    private String computeGEDSPath(Path f, Boolean stripped) {
+        stripped = false;
         try {
             String s = Path.getPathWithoutSchemeAndAuthority(f).toString();
             if (s.startsWith("/")) {
                 s = s.substring(1);
+                stripped = true;
             }
+            System.out.println(s);
             return s;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return "";
         }
+    }
+
+    private String computeGEDSPath(Path f) {
+        Boolean stripped = false;
+        return computeGEDSPath(f, stripped);
     }
 
     @Override
@@ -109,8 +117,10 @@ public class GEDSHadoopFileSystem extends FileSystem {
 
     @Override
     public FileStatus[] listStatus(Path f) throws FileNotFoundException, IOException {
-        String path = computeGEDSPath(f);
-        if (!path.endsWith("/")) {
+        Boolean strippedPrefix = false;
+        String path = computeGEDSPath(f, strippedPrefix);
+        String prefix = strippedPrefix ? "/" : "";
+        if (!path.endsWith("/") && !path.equals("")) {
             path = path + "/";
         }
         GEDSFileStatus[] st = geds.listAsFolder(bucket, path);
@@ -118,7 +128,7 @@ public class GEDSHadoopFileSystem extends FileSystem {
         for (int i = 0; i < st.length; i++) {
             GEDSFileStatus s = st[i];
             response[i] = new FileStatus(s.size, s.isDirectory, 1, blockSize, 0,
-                    new Path(s.key).makeQualified(getUri(), workingDirectory));
+                    new Path(prefix + s.key).makeQualified(getUri(), workingDirectory));
         }
         return response;
     }
@@ -140,8 +150,8 @@ public class GEDSHadoopFileSystem extends FileSystem {
 
     @Override
     public FileStatus getFileStatus(Path f) throws IOException {
-        GEDSFileStatus st = geds.status(bucket, computeGEDSPath(f));
-        return new FileStatus(st.size, st.isDirectory, 1, blockSize, 0,
-                new Path(st.key).makeQualified(getUri(), workingDirectory));
+        String path = computeGEDSPath(f);
+        GEDSFileStatus st = geds.status(bucket, path);
+        return new FileStatus(st.size, st.isDirectory, 1, blockSize, 0, f);
     }
 }
