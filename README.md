@@ -17,6 +17,15 @@ sbt package
 ```
 The library will be located in `target/scala-2.12/`.
 
+## Testing
+
+The tests can be executed by running `sbt test`. The backing object store can be configured with the following environment variables:
+
+- `TEST_BUCKET`: Bucket for the storage location (default: `test`)
+- `AWS_ACCESS_KEY_ID`: The access key for the object store (default: `minioadmin`)
+- `AWS_SECRET_ACCESS_KEY`: The secret access key for the object store (default: `minioadmin`)
+- `AWS_ENDPOINT_URL`: The URL of the backing object store (`http://10.100.0.15:9000`)
+
 ## Configuration
 
 Place the GEDS-HDFS plugin, `geds.jar` into the Java class path, and `libgeds_java.so` into the `LD_LIBRARY` path. GEDS can then be configured with the following variables:
@@ -29,7 +38,7 @@ Place the GEDS-HDFS plugin, `geds.jar` into the Java class path, and `libgeds_ja
 
 GEDS allows mapping individual buckets to S3. For each bucket, the following configuration variables can be passed to enable a S3 mapping.
 - `fs.geds.BUCKET_NAME.accessKey`: S3 Access key for `BUCKET_NAME`.
-- `fs.geds.BUCKET_NAME.secretKey`: S3 Secret key for `BUCKET_NAME`. 
+- `fs.geds.BUCKET_NAME.secretKey`: S3 Secret key for `BUCKET_NAME`.
 - `fs.geds.BUCKET_NAME.endpoint`: S3 Endpoint to use for `BUCKET_NAME`.
 
 ### Example Spark configuration
@@ -93,7 +102,7 @@ Below is a list of projects that implement the Hadoop Filesystem which we can us
 
 - **s3a://** [S3AFileSystem](https://github.com/apache/hadoop/blob/trunk/hadoop-tools/hadoop-aws/src/main/java/org/apache/hadoop/fs/s3a/S3AFileSystem.java)
 
-  Minimal config: 
+  Minimal config:
   ```
   --conf spark.hadoop.fs.s3a.access.key=Nase
   --conf spark.hadoop.fs.s3a.secret.key=Baer
@@ -117,9 +126,9 @@ Below is a list of projects that implement the Hadoop Filesystem which we can us
     <value>org.apache.crail.hdfs.CrailHDFS</value>
   </property>
   ```
-  
+
   *Note*: Crail is special since it defines `fs.defaultFS` and uses `AbstractFileSystem` as a base implementation. For our use-case we want to model the `s3a`-approach:
-  
+
   - We don't want to override `fs.defaultFS`
   - `GEDSHadoopFileSystem` should inherit from `org.apache.hadoop.fs.FileSystem` directly
 - **https://** [AbstractHttpFileSystem](https://github.com/apache/hadoop/blob/trunk/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/http/AbstractHttpFileSystem.java)
