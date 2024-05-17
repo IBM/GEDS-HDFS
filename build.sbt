@@ -8,7 +8,7 @@ organization := "com.ibm"
 name := "geds-hdfs"
 version := "SNAPSHOT"
 
-val gedsApiVersion = "1.2"
+val gedsApiVersion = "1.3"
 val userHome = sys.env.getOrElse("HOME", "/home/psp")
 val gedsInstallPath = sys.env.getOrElse("GEDS_INSTALL", userHome+"/geds-install")
 val hadoopVersion = sys.env.getOrElse("HADOOP_VERSION", "3.3.4")
