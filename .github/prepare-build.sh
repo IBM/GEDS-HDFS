@@ -31,5 +31,5 @@ fi
 
 
 GEDS_VERSION=${GEDS_VERSION:-"1.0.5"}
-wget -nv "https://github.com/IBM/GEDS/releases/download/v${GEDS_VERSION}/geds-x86_64-debian11.5-${GEDS_VERSION}-Release.tar.gz"
-tar xf "geds-x86_64-debian11.5-${GEDS_VERSION}-Release.tar.gz"
+wget -nv "https://github.com/IBM/GEDS/releases/download/v${GEDS_VERSION}/geds-x86_64-debian12-${GEDS_VERSION}-Release.tar.gz"
+tar xf "geds-x86_64-debian12-${GEDS_VERSION}-Release.tar.gz"

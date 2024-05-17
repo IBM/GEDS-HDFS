@@ -24,14 +24,14 @@ RUN git clone https://github.com/zrlio/sql-benchmarks \
 
 # Result /sql-benchmarks/target/sql-benchmarks-1.0.jar
 
-### 
+###
 # GEDS-HDFS
 FROM java-prerequisites as geds-hdfs-builder
 
-ARG GEDS_VERSION=1.0
-RUN wget -nv "https://github.com/IBM/GEDS/releases/download/v${GEDS_VERSION}/geds-x86_64-debian11.5-${GEDS_VERSION}-Release.tar.gz" \
-    && tar xf "geds-x86_64-debian11.5-${GEDS_VERSION}-Release.tar.gz" -C /usr/local/ \
-    && rm "geds-x86_64-debian11.5-${GEDS_VERSION}-Release.tar.gz"
+ARG GEDS_VERSION=1.0.5
+RUN wget -nv "https://github.com/IBM/GEDS/releases/download/v${GEDS_VERSION}/geds-x86_64-debian12-${GEDS_VERSION}-Release.tar.gz" \
+    && tar xf "geds-x86_64-debian12-${GEDS_VERSION}-Release.tar.gz" -C /usr/local/ \
+    && rm "geds-x86_64-debian12-${GEDS_VERSION}-Release.tar.gz"
 
 RUN wget -nv https://repo.scala-sbt.org/scalasbt/debian/sbt-1.8.2.deb \
     && dpkg -i sbt-1.8.2.deb \
@@ -47,7 +47,7 @@ RUN git clone https://github.com/IBM/GEDS-HDFS \
 # Spark Container
 FROM docker.io/apache/spark-py:3.3.1
 
-ARG GEDS_VERSION=1.0
+ARG GEDS_VERSION=1.0.5
 ARG HADOOP_VERSION=3.3.2
 ARG AWS_SDK_VERSION=1.11.1026
 ARG STOCATOR_VERSION=1.1.5
