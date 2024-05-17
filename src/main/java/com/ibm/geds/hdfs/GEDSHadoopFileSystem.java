@@ -89,7 +89,7 @@ public class GEDSHadoopFileSystem extends FileSystem {
     @Override
     public FSDataOutputStream create(Path f, FsPermission permission, boolean overwrite, int bufferSize,
             short replication, long blockSize, Progressable progress) throws IOException {
-        GEDSFile file = geds.create(bucket, computeGEDSPath(f));
+        GEDSFile file = geds.create(bucket, computeGEDSPath(f), overwrite);
         return new FSDataOutputStream(new BufferedOutputStream(new GEDSOutputStream(file)), statistics);
     }
 
