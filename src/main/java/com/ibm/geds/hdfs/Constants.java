@@ -17,4 +17,5 @@ public class Constants {
     public static final String AVAILABLE_LOCAL_STORAGE = "available_local_storage";
     public static final String AVAILABLE_LOCAL_MEMORY = "available_local_memory";
     public static final String IO_THREAD_POOL_SIZE = "io_thread_pool_size";
+    public static final String CONFIGURE_S3_USING_ENV = "configure_s3_using_env";
 }
