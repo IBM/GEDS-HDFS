@@ -11,6 +11,7 @@ import com.ibm.geds.GEDSConfig;
 import org.apache.hadoop.conf.Configuration;
 
 public class GEDSInstance {
+    private static boolean configureS3usingEnv;
     private static GEDS instance;
     private static GEDSConfig instanceConfig;
 
@@ -96,6 +97,9 @@ public class GEDSInstance {
             if (io_thread_pool_size != 0) {
                 instanceConfig.set(Constants.IO_THREAD_POOL_SIZE, io_thread_pool_size);
             }
+
+            configureS3usingEnv = conf.getLong(Constants.GEDS_PREFIX + Constants.CONFIGURE_S3_USING_ENV,
+                    getEnvLong("GEDS_CONFIGURE_S3_USING_ENV", 0)) == 1;
         }
         return instanceConfig;
     }
@@ -108,18 +112,36 @@ public class GEDSInstance {
         } catch (Exception e) {
             // Always initialize bucket.
         }
-        String bucketAccessKey = conf.get(Constants.GEDS_PREFIX + bucket + ".accessKey");
-        String bucketSecretKey = conf.get(Constants.GEDS_PREFIX + bucket + ".secretKey");
-        String bucketEndpoint = conf.get(Constants.GEDS_PREFIX + bucket + ".endpoint");
+        if (configureS3usingEnv) {
+            String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
+            String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
+            String endpoint = System.getenv("AWS_ENDPOINT_URL");
 
-        boolean hasAccessKey = bucketAccessKey != null;
-        boolean hasSecretKey = bucketSecretKey != null;
-        boolean hasBucketEndpoint = bucketEndpoint != null;
-        if (hasAccessKey && hasSecretKey && hasBucketEndpoint) {
-            geds.registerObjectStoreConfig(bucket, bucketEndpoint, bucketAccessKey, bucketSecretKey);
-        } else if (hasAccessKey || hasSecretKey || hasBucketEndpoint) {
-            throw new RuntimeException("Bucket " + bucket
-                    + " has either an accessKey, secretKey or an endpoint registered. To map the bucket to S3 all variables need to be configured.");
+            boolean hasAccessKey = accessKey != null;
+            boolean hasSecretKey = secretKey != null;
+            boolean hasEndpoint = endpoint != null;
+            if (hasAccessKey && hasSecretKey && hasEndpoint) {
+                geds.registerObjectStoreConfig(bucket, endpoint, accessKey, secretKey);
+            } else if (hasAccessKey || hasSecretKey || hasEndpoint) {
+                throw new RuntimeException(Constants.CONFIGURE_S3_USING_ENV
+                        + "is enabled and either AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY or AWS_ENDPOINT_URL is set.");
+            }
+        } else {
+            String bucketAccessKey = conf.get(Constants.GEDS_PREFIX + bucket + ".accessKey",
+                    getEnv("AWS_ACCESS_KEY_ID"));
+            String bucketSecretKey = conf.get(Constants.GEDS_PREFIX + bucket + ".secretKey",
+                    getEnv("AWS_ACCESS_KEY_ID"));
+            String bucketEndpoint = conf.get(Constants.GEDS_PREFIX + bucket + ".endpoint", getEnv("AWS_ENDPOINT_URL"));
+
+            boolean hasAccessKey = bucketAccessKey != null;
+            boolean hasSecretKey = bucketSecretKey != null;
+            boolean hasBucketEndpoint = bucketEndpoint != null;
+            if (hasAccessKey && hasSecretKey && hasBucketEndpoint) {
+                geds.registerObjectStoreConfig(bucket, bucketEndpoint, bucketAccessKey, bucketSecretKey);
+            } else if (hasAccessKey || hasSecretKey || hasBucketEndpoint) {
+                throw new RuntimeException("Bucket " + bucket
+                        + " has either an accessKey, secretKey or an endpoint registered. To map the bucket to S3 all variables need to be configured.");
+            }
         }
         return geds;
     }
