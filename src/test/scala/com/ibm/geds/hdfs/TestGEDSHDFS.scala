@@ -99,7 +99,6 @@ object TestGEDSHDFS {
       f"fs.geds.${bucket}.endpoint",
       sys.env.get("AWS_ENDPOINT_URL").getOrElse("http://localhost:9000")
     )
-    conf.set("fs.geds.metadataserver", "localhost:4381")
     fs = FileSystem.get(new java.net.URI(f"geds://${bucket}"), conf)
     System.out.println(
       "@BeforeAll - executes once before all test methods in this class"
