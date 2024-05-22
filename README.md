@@ -31,10 +31,11 @@ The tests can be executed by running `sbt test`. The backing object store can be
 Place the GEDS-HDFS plugin, `geds.jar` into the Java class path, and `libgeds_java.so` into the `LD_LIBRARY` path. GEDS can then be configured with the following variables:
 
 - `fs.geds.impl`: `com.ibm.geds.hdfs.GEDSHadoopFileSystem` - **Required**
-- `fs.geds.metadataserver`: Ip or DNS of the metadata server - **Required**
-- `fs.geds.blocksize`: GEDS block size in bytes. Example: `33554432`
-- `fs.geds.path`: Local GEDS path for ephemeral data. A path that ends with `XXXXXX` will be randomized with `mktempd`. Default: `/tmp/GEDSHadoop`. - Optional
-- `fs.geds.port`: Local port for the GEDS service. - Optional
+- `fs.geds.metadataserver`: Ip or DNS of the metadata server - **Required** (can be alternatively configured by setting the `GEDS_METADATASERVER` environment variable)
+- `fs.geds.cache_block_size`: GEDS cache block size in bytes. Example: `33554432` - Optional (can be alternatively configured by setting the `GEDS_CACHE_BLOCK_SIZE` environment variable)
+- `fs.geds.path`: Local GEDS path for ephemeral data. A path that ends with `XXXXXX` will be randomized with `mktempd`. Default: `/tmp/GEDSHadoop` - Optional (can be alternatively configured by setting the `GEDS_LOCAL_STORAGE_PATH` environment variable).
+- `fs.geds.port`: Local port for the GEDS service. - Optional (can be alternatively configured by setting the `GEDS_PORT` environment variable)
+- `fs.geds.http_server_port`: Local port for the HTTP service. - Optional (can be alternatively configured by setting the `GEDS_HTTP_SERVER_PORT` environment variable)
 
 GEDS allows mapping individual buckets to S3. For each bucket, the following configuration variables can be passed to enable a S3 mapping.
 - `fs.geds.BUCKET_NAME.accessKey`: S3 Access key for `BUCKET_NAME`.
